@@ -26,12 +26,12 @@ app.get('/', function (request, response) {
 });
 
 // for Facebook verification
-app.get('/webhook/', function (req, res) {
-	if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
-		res.send(req.query['hub.challenge'])
-	}
-	res.send('Error, wrong token')
-})
+app.get('/webhook/', fb.webhook);
+
+// to post data
+app.post('/webhook/', fb.webhook);
+
+
 
 var server = app.listen(app.get('port'), function () {
   console.log('Listening at http://localhost:' + app.get('port'));
