@@ -11,6 +11,9 @@ var authToken = '1084d124870aa80d68f4e31f2205fd52';
 var obj = [];
 var twilio = require('twilio');
 var client = new twilio.RestClient(accountSid, authToken);
+
+var fb = require('./routes/fb');
+
 app.use(express.static(__dirname));
 app.set('port', (process.env.PORT || portno))
 
@@ -63,7 +66,7 @@ var initTwilio = function(obj) {
                   http.createServer(app).listen(8000, function () {
                     console.log("Express server listening on port 8000");
                   });
-          }).listen(process.env.port)
+          }).listen(portno)
 
 
 
