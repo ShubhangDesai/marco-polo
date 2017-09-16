@@ -1,0 +1,14 @@
+var twilio = require('twilio');
+
+var accountSid = 'ACf70f438d634576ed3c82882596df73ff';
+var authToken = '1084d124870aa80d68f4e31f2205fd52';
+
+var client = new twilio.RestClient(accountSid, authToken);
+
+client.messages.create({
+    body: 'Hello from Node',
+    to: '+17657750687',
+    from: '+12727703870'
+}, function(err, message) {
+    console.log(message.sid);
+});
