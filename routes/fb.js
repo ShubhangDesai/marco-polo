@@ -66,7 +66,7 @@ function sendGenericMessage(sender) {
 				    "buttons": [{
 					    "type": "web_url",
 					    "url": "https://boston.craigslist.org/gbs/mob/d/iphone-7-plus-32gb-gold/6308518074.html",
-					    "title": "listing url"
+					    "title": "Listing URL"
 				    }, {
 					    "type": "postback",
 					    "title": "Buy",
@@ -79,7 +79,7 @@ function sendGenericMessage(sender) {
 				    "buttons": [{
 					    "type": "web_url",
 					    "url": "https://boston.craigslist.org/nwb/mob/d/128gb-rose-gold-iphone-7-plus/6297370625.html",
-					    "title": "listing url"
+					    "title": "Listing URL"
 				    }, {
 					    "type": "postback",
 					    "title": "Buy",
@@ -92,7 +92,7 @@ function sendGenericMessage(sender) {
 				    "buttons": [{
 					    "type": "web_url",
 					    "url": "https://boston.craigslist.org/gbs/mob/d/new-in-box-apple-iphone-7/6308634620.html",
-					    "title": "listing url"
+					    "title": "Listing URL"
 				    }, {
 					    "type": "postback",
 					    "title": "Buy",
