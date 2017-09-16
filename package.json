@@ -11,9 +11,7 @@
   "dependencies": {
     "angular": "1.6.1",
     "express": "^4.14.1",
-    "node-craigslist": "^1.2.1"
-  },
-  "devDependencies": {
+    "node-craigslist": "^1.2.1",
     "body-parser": "^1.18.1",
     "request": "^2.81.0"
   }
