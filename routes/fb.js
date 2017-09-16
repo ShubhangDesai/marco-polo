@@ -1,6 +1,8 @@
 var express = require('express');
 var request = require('request')
 
+const token = process.env.FB_PAGE_ACCESS_TOKEN;
+
 exports.webhook = function(req, res) {
 	if (req.method == 'GET'){
 		if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
