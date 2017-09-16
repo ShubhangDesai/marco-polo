@@ -77,7 +77,12 @@ app.get('/webhook/', fb.webhook);
 // to post data
 app.post('/webhook/', fb.webhook);
 
-
+app.post('/sms', function(req, res) {
+    var twiml = new twilio.TwimlResponse();
+    twiml.message('The Robots are coming! Head for the hills!');
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
+});
 
 var server = app.listen(app.get('port'), function () {
   console.log('Listening at http://localhost:' + app.get('port'));
@@ -87,26 +92,13 @@ var server = app.listen(app.get('port'), function () {
 
 var sellerText = 'I am selling a sofa';
 var initTwilio = function(obj) {
-  client.messages.create({
-              body: sellerText,
-              to: '+17657750687',
-              from: '+12727703870'
-          }, function(err, message) {
-                console.log(' error is: ' + err);
-              	console.log(' Testing gives: ' + message);
-          });
+  	client.messages.create({
+    	body: sellerText,
+      	to: '+17657750687',
+      	from: '+12727703870'
+  	}, function(err, message) {
+        console.log(' error is: ' + err);
+      	console.log(' Testing gives: ' + message);
+});
 
-
-          http.createServer(function(request, response){
-            app.post('/sms', function(req, res) {
-                        var twiml = new twilio.TwimlResponse();
-                        twiml.message('The Robots are coming! Head for the hills!');
-                        res.writeHead(200, {'Content-Type': 'text/xml'});
-                        res.end(twiml.toString());
-                      });
-
-                  http.createServer(app).listen(8000, function () {
-                    console.log("Express server listening on port 8000");
-                  });
-          }).listen(portno)
 }
