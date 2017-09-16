@@ -6,6 +6,7 @@ var request = require('request')
 var portno = 8000;
 var app = express();
 app.use(express.static(__dirname));
+app.set('port', (process.env.PORT || portno))
 
 // Process application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({extended: false}))
