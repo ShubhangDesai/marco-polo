@@ -15,6 +15,7 @@ app.use(bodyParser.json())
 
 app.get('/', function (request, response) {
     console.log('Test');
+	response.send('Hello world, I am a chat bot');
 });
 
 // for Facebook verification
