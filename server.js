@@ -27,6 +27,6 @@ app.get('/webhook/', function (req, res) {
 	res.send('Error, wrong token')
 })
 
-var server = app.listen(portno, function () {
-  console.log('Listening at http://localhost:' + portno);
+var server = app.listen(app.get('port'), function () {
+  console.log('Listening at http://localhost:' + app.get('port'));
 });
