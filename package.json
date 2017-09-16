@@ -11,5 +11,9 @@
   "dependencies": {
     "angular": "1.6.1",
     "express": "^4.14.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.18.1",
+    "request": "^2.81.0"
   }
 }
