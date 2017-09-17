@@ -43,7 +43,7 @@ exports.webhook = function(req, res) {
 							sendListingCardsMessage(sender, res);
 						});
 					} else {
-						sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+						sendTextMessage(sender, "Text received, echo: " + event.message.text.substring(0, 200));
 					}
 			  });
 			}
