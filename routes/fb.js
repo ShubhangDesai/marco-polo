@@ -2,6 +2,7 @@ var express = require('express');
 var request = require('request')
 var craigslist = require('./craigslist');
 var myID = '117445018970988';
+var twil = require('../twilio');
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
 
@@ -97,6 +98,10 @@ exports.webhook = function(req, res) {
 							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
 							sendTextMessage(sender, "Sure, I'll let you contact them! Hope you enjoy your " + orders[sender].product + "!! ^_^");
+							var twilobj = {
+
+							};
+							twil.conversationWithSeller(twilobj);
 							delete orders[sender];
 							delete orders[parseInt(sender)];
 						}
@@ -171,53 +176,63 @@ function sendTextMessage(sender, text) {
 function sendListingCardsMessage(sender, recipient, listings) {
 	let elements = [];
 
-	listings.forEach((listing) => {
-		let element = {
-			"title": listing.title,
-			"subtitle": listing.description,
-			"buttons": [{
-				"type": "web_url",
-				"url": listing.url,
-				"title": "Listing URL"
-			}, {
-				"type": "postback",
-				"title": "Buy",
-				"payload": JSON.stringify({
-					"type": "buy",
-					"pid": listing.pid,
-					"replyUrl": listing.replyUrl
-				})
-			}],
-		};
+	request({
+		url: 'https://graph.facebook.com/v2.6/'+sender+'?access_token='+token,
+		method: 'GET'
+	}, function(error, response, body) {
 
-		if (listing.image)
-			element.image_url = listing.image[0];
+		listings.forEach((listing) => {
+			let element = {
+				"title": listing.title,
+				"subtitle": listing.description,
+				"buttons": [{
+					"type": "web_url",
+					"url": listing.url,
+					"title": "Listing URL"
+				}, {
+					"type": "postback",
+					"title": "Buy",
+					"payload": JSON.stringify({
+						"type": "buy",
+						"pid": listing.pid,
+						"replyUrl": listing.replyUrl,
+						"title": listing.title,
+						"price": listing.price,
+						"name": response.body.first_name
+					})
+				}],
+			};
 
-		elements.push(element);
-	});
+			if (listing.image)
+				element.image_url = listing.image[0];
 
-	let messageData = {
-		"attachment": {
-			"type": "template",
-			"payload": {
-				"template_type": "generic",
-				"elements": elements
+			elements.push(element);
+		});
+
+		let messageData = {
+			"attachment": {
+				"type": "template",
+				"payload": {
+					"template_type": "generic",
+					"elements": elements
+				}
 			}
 		}
-	}
-	request({
-		url: 'https://graph.facebook.com/v2.6/me/messages',
-		qs: { access_token: token },
-		method: 'POST',
-		json: {
-			recipient: { id: sender },
-			message: messageData,
-		}
-	}, function(error, response, body) {
-		if (error) {
-			console.log('Error sending messages: ', error)
-		} else if (response.body.error) {
-			console.log('Error: ', response.body.error)
-		}
-	})
+		request({
+			url: 'https://graph.facebook.com/v2.6/me/messages',
+			qs: { access_token: token },
+			method: 'POST',
+			json: {
+				recipient: { id: sender },
+				message: messageData,
+			}
+		}, function(error, response, body) {
+			if (error) {
+				console.log('Error sending messages: ', error)
+			} else if (response.body.error) {
+				console.log('Error: ', response.body.error)
+			}
+		})
+	});
+
 }

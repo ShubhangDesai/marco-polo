@@ -19,7 +19,7 @@ var sendMessage = function(message,to) {
 };
 
 
-var conversationWithSeller = function(data){
+exports.conversationWithSeller = function(data){
   if(init == 0){
     init = 1;
     var message = "Hi, I'm " + name + ". I saw your listing on craigslist titled \"" + title + "\". I was wondering if you would be interested in selling it to me for " + initialcost + ". Please let me know.";
