@@ -55,7 +55,9 @@ exports.webhook = function(req, res) {
 					if(payload.type == "buy"){ 
 						console.log("inside buy postback");
 			          sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number."); 
-			          sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?"); 
+			          setTimeout(function(){
+			          	sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
+			          }, 2000); 
 			        } 
 					// let text = JSON.stringify(event.postback)
 					// sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
