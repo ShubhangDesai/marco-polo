@@ -7,7 +7,7 @@ client = new craigslist.Client({
 
 var resObject = [];
 
-exports.getListings = function(request,response) { 
+exports.getListings = function(request,callback) { 
     
     var options = {
       hasPic : true,
@@ -16,25 +16,25 @@ exports.getListings = function(request,response) {
       offset : 5
     };
   
-    if(request.body.hasOwnProperty('category')){
-      options['category'] = request.body.category;
+    if(request.hasOwnProperty('category')){
+      options['category'] = request.category;
     }
-    if(request.body.hasOwnProperty('maxAsk')){
-      options['maxAsk'] = request.body.maxAsk;
+    if(request.hasOwnProperty('maxAsk')){
+      options['maxAsk'] = request.maxAsk;
     }
-    if(request.body.hasOwnProperty('minAsk')){
-      options['minAsk'] = request.body.minAsk;
+    if(request.hasOwnProperty('minAsk')){
+      options['minAsk'] = request.minAsk;
     }
-    if(request.body.hasOwnProperty('offset')){
-      options['offset'] = request.body.offset;
+    if(request.hasOwnProperty('offset')){
+      options['offset'] = request.offset;
     }
-    if(request.body.hasOwnProperty('city')){
-      options['city'] = request.body.city;
+    if(request.hasOwnProperty('city')){
+      options['city'] = request.city;
     }
 
     //console.log(options);
     client
-    .search(options, request.body.query)
+    .search(options, request.query)
     .then((listings) => {
       for(var i=0; i<listings.length && i<5; i++){
 
@@ -49,7 +49,7 @@ exports.getListings = function(request,response) {
               console.log('error: '+err);
             }
             else {
-              console.log(details['replyUrl'] + " hey");
+              console.log(details);
               resObject[i]['description'] = details['description'];
               resObject[i]['image'] = details['images'];
               resObject[i]['replyUrl'] = details['replyUrl'];
@@ -60,7 +60,7 @@ exports.getListings = function(request,response) {
           })
         }
         else{
-          response.send(resObject);
+          callback(resObject);
         }
       }
       listingIterator(0);

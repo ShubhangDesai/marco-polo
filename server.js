@@ -36,8 +36,19 @@ app.get('/webhook/', fb.webhook);
 // to post data
 app.post('/webhook/', fb.webhook);
 
-//get listings from craigslist
-app.post('/getListings', craigslist.getListings);
+app.get('/list', function(request, response){
+	var obj = {
+	category : "sss",
+    maxAsk : 500,
+    minAsk : 100,
+    city : "Seattle",
+    query : "IPhone"
+	}
+
+	craigslist.getListings(obj, function(res){
+		response.send(res);
+	});
+});
 
 app.post('/sms', function(req, res)
 {
