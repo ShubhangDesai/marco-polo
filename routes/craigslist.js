@@ -49,7 +49,7 @@ exports.getListings = function(request,callback) {
               console.log('error: '+err);
             }
             else {
-              console.log(details);
+              //console.log(details);
               resObject[i]['description'] = details['description'];
               resObject[i]['image'] = details['images'];
               resObject[i]['replyUrl'] = details['replyUrl'];
