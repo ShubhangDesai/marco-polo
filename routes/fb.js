@@ -90,14 +90,15 @@ exports.webhook = function(req, res) {
 						console.log("inside negotiate");
 
 						if (payload.answer == 1) {
-							orders[sender].number = true;
+							orders[parseInt(sender)].number = true;
 							sendTextMessage(sender, "Please give me the phone number of the seller you got from the previous step.");
-							console.log(orders[sender], "inside payload", sender);
+							console.log(orders[parseInt(sender)], "inside payload", parseInt(sender));
 
 							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
 							sendTextMessage(sender, "Sure, I'll let you contact them! Hope you enjoy your " + orders[sender].product + "!! ^_^");
 							delete orders[sender];
+							delete orders[parseInt(sender)];
 						}
 					}
 				}
