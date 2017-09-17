@@ -66,7 +66,9 @@ exports.webhook = function(req, res) {
 							sendTextMessage(sender, "Text received, echo: " + event.message.text.substring(0, 200));
 						}
 				  });
-				} else if (event.postback) {
+				} 
+
+				if (event.postback) {
 					payload = JSON.parse(event.postback.payload);
 					if (payload.type == "buy") {
 					    console.log("inside buy postback");
