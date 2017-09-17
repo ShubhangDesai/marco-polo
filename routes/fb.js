@@ -91,7 +91,7 @@ exports.webhook = function(req, res) {
 						if (payload.answer == 1) {
 							sendTextMessage(sender, "Please give me the phone number of the seller you got from the previous step.");
 							orders[sender].number = true;
-							console.log(orders[sender].number)
+							console.log(orders[sender].number, "inside payload")
 
 							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
