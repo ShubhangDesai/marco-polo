@@ -38,8 +38,8 @@ exports.webhook = function(req, res) {
 					continue
 				} else {
 
-					sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-				a}
+					sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+				}
 			} 
 			if (event.postback) {
 				let text = JSON.stringify(event.postback)
