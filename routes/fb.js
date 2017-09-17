@@ -173,7 +173,7 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendListingCardsMessage(sender, recipient, listings) {
+function sendListingCardsMessage(sender, listings) {
 	let elements = [];
 	var listingsObj = listings;
 	request({
