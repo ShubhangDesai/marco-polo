@@ -92,11 +92,11 @@ function sendListingCardsMessage(sender, listings) {
 		    }, {
 			    "type": "postback",
 			    "title": "Buy",
-			    "payload": { 
+			    "payload": JSON.stringify({ 
 		            "type": "buy", 
 		            "pid": listing.pid, 
 		            "replyUrl": listing.replyUrl 
-		          } 
+		        })
 		    }],
 		};
 
