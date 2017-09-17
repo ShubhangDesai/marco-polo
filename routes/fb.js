@@ -49,9 +49,12 @@ exports.webhook = function(req, res) {
 			  });
 			}
 			if (event.postback) {
-				let text = JSON.stringify(event.postback)
-				sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-				continue
+				if(event.postback.type == "buy"){
+					sendTextMessage(sender, "Okay! Here's the reply URL - " + event.postback.replyUrl + ". You need to click it to get the seller's number.");
+					sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
+				}
+				//let text = JSON.stringify(event.postback)
+				//sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
 			}
 		}
 		res.sendStatus(200)
@@ -92,7 +95,11 @@ function sendListingCardsMessage(sender, listings) {
 		    }, {
 			    "type": "postback",
 			    "title": "Buy",
-			    "payload": "Payload for first element in a generic bubble",
+			    "payload": {
+			    	"type": "buy",
+			    	"pid": listing.pid,
+			    	"replyUrl": listing.replyUrl
+			    },
 		    }],
 		};
 
