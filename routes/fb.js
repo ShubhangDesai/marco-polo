@@ -66,8 +66,8 @@ exports.webhook = function(req, res) {
 				  });
 				} 
 
-				if (event.postback) {
-					payload = JSON.parse(event.postback.payload);
+				if (event.postback || event.quick_reply) {
+					payload = event.postback ? JSON.parse(event.postback.payload) : JSON.parse(event.quick_reply.payload);
 					if (payload.type === "buy") {
 					    console.log("inside buy postback");
 				        sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
