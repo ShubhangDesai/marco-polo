@@ -2,6 +2,7 @@ var express = require('express');
 var request = require('request')
 var craigslist = require('./craigslist');
 var myID = '117445018970988';
+var senderID = '1576934995661792';
 var twil = require('../twilio');
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
@@ -187,6 +188,7 @@ exports.sendTextMessage = sendTextMessage;
 function sendListingCardsMessage(sender, listings) {
 	let elements = [];
 	var listingsObj = listings;
+	senderID = sender ? sender : senderID;
 	request({
 		url: 'https://graph.facebook.com/v2.6/'+sender+'?access_token='+token,
 		method: 'GET'
@@ -212,7 +214,7 @@ function sendListingCardsMessage(sender, listings) {
 						"title": listing.title,
 						"price": listing.price,
 						"name": bodyObj.first_name,
-						"userid": sender
+						"userid": senderID
 					})
 				}],
 			};

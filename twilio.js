@@ -47,18 +47,18 @@ exports.convo = function(req,res){
       else if(string.toLowerCase().indexOf("yes") !== -1 || string.toLowerCase().indexOf("yeah") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
         botMessageCount = 0;
-        fb.sendTextMessage(userid.toString(), "sdasd");
+        fb.sendTextMessage(userid, "sdasd");
       }
     }
 
     if(botMessageCount == 2){
       if(string.toLowerCase().indexOf("yeah") !== -1 || string.toLowerCase().indexOf("yes") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
-        fb.sendTextMessage(userid.toString(), "sdasd");
+        fb.sendTextMessage(userid, "sdasd");
       }
       else{
         twiml.message('Nevermind. Thankyou for your time. I don\'t think I\'m interested anymore');
-        fb.sendTextMessage(userid.toString(), "sdasd");
+        fb.sendTextMessage(userid, "sdasd");
       }
       botMessageCount = 0;
     }
