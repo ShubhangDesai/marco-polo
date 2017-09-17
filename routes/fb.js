@@ -180,7 +180,9 @@ function sendListingCardsMessage(sender, listings) {
 		url: 'https://graph.facebook.com/v2.6/'+sender+'?access_token='+token,
 		method: 'GET'
 	}, function(error, response, body) {
-		console.log('graph res', response);
+		let bodyObj = JSON.parse(response.body);
+				console.log('graph res', bodyObj);
+
 		listingsObj.forEach((listing) => {
 			let element = {
 				"title": listing.title,
@@ -198,7 +200,7 @@ function sendListingCardsMessage(sender, listings) {
 						"replyUrl": listing.replyUrl,
 						"title": listing.title,
 						"price": listing.price,
-						"name": response.body.first_name
+						"name": bodyObj.first_name
 					})
 				}],
 			};
