@@ -27,6 +27,7 @@ exports.webhook = function(req, res) {
 			    method: 'GET'
 			  }, function(error, response, body) {
 			    body = JSON.parse(body)
+			    console.log('ms body', body);
 					var intent = body.topScoringIntent.intent;
 					if (intent === 'Shop'){
 						var product = body.entities[0].entity;
