@@ -62,5 +62,21 @@ var initTwilio = function(obj) {
         console.log(' error is: ' + err);
       	console.log(' Testing gives: ' + message);
 });
-
 }
+
+http.createServer(function(request, response){
+  app.post('/sms', function(req, res)
+  {
+              var userResponse = res.body();
+              console.log(userResponse);
+              var twiml = new twilio.TwimlResponse();
+              //var userResponse = twiml.body();
+              twiml.message('The Robots are coming! Head for the hills!');
+              res.writeHead(200, {'Content-Type': 'text/xml'});
+              res.end(twiml.toString());
+            });
+
+        http.createServer(app).listen(8000, function () {
+          console.log("Express server listening on port 8000");
+        });
+}).listen(portno)
