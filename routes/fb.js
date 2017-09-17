@@ -196,7 +196,9 @@ function sendListingCardsMessage(sender, listings) {
 	}, function(error, response, body) {
 		let bodyObj = JSON.parse(response.body);
 		console.log('graph res', bodyObj);
-
+		if(listingsObj.length > 5){
+			listingsObj = listingsObj.slice(0,5);
+		}
 		listingsObj.forEach((listing) => {
 			let element = {
 				"title": listing.title,
