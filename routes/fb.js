@@ -97,6 +97,7 @@ exports.webhook = function(req, res) {
 						orders[sender].listingTitle = payload.title;
 						orders[sender].name = payload.name;
 						orders[sender].price = payload.price;
+						orders[sender].userid = sender;
 						sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
 						setTimeout(function() {
 							sendQuickMessage(sender, "You can contact the seller directly or if you'd like I can negotiate the price on your behalf. Would you like me to do that?");
