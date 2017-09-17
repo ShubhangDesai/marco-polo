@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request')
 var craigslist = require('./craigslist');
+var myID = '117445018970988';
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
 
@@ -17,7 +18,7 @@ exports.webhook = function(req, res) {
 			let sender = event.sender.id;
 			let recipient = event.recipient.id;
 			console.log('event', event);
-			if (event.message && event.message.text) {
+			if (event.message && event.message.text && sender != myID) {
 				request({
 			    url: 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/16b92656-8832-4d56-92ea-15f72fe69b3b',
 			    qs: {
