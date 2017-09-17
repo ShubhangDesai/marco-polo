@@ -175,13 +175,13 @@ function sendTextMessage(sender, text) {
 
 function sendListingCardsMessage(sender, recipient, listings) {
 	let elements = [];
-
+	let listingsObj = listings;
 	request({
 		url: 'https://graph.facebook.com/v2.6/'+sender+'?access_token='+token,
 		method: 'GET'
 	}, function(error, response, body) {
 
-		listings.forEach((listing) => {
+		listingsObj.forEach((listing) => {
 			let element = {
 				"title": listing.title,
 				"subtitle": listing.description,
