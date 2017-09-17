@@ -74,7 +74,13 @@ exports.webhook = function(req, res) {
 			        setTimeout(function(){
 			            sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
 			        }, 2000);
-			    }
+			    } else if (payload.type == "negotiate") {
+						if payload.answer == 1 {
+							sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
+						} else {
+							sendTextMessage(sender, "Sure, I'll let you contact them! Hope you enjoy your " + orders[sender].product "!! ^_^");
+						}
+					}
 				}
 			}
 		}
