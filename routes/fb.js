@@ -40,14 +40,14 @@ exports.webhook = function(req, res) {
 							body = JSON.parse(body)
 							console.log('ms body', body);
 							var intent = body.topScoringIntent.intent;
-							if (intent === 'Shop') {
+							if (intent === 'Shop' && body.entities[0] != undefined) {
 								var product = body.entities[0].entity;
 								orders[sender] = { product: product };
 								sendTextMessage(sender, "Okay! I'll try to find you a " + product + ". \
 																				What is the minimum price you're willing to pay for it?");
 
 
-							} else if (intent === 'GivePrice') {
+							} else if (intent === 'GivePrice' && body.entities[0] != undefined) {
 								var price = body.entities[0].entity;
 								if (orders[sender].min != undefined) {
 									orders[sender].max = price;
