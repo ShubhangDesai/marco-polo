@@ -39,7 +39,10 @@ app.post('/webhook/', fb.webhook);
 //get listings from craigslist
 app.post('/getListings', craigslist.getListings);
 
-app.post('/sms', function(req, res) {
+app.post('/sms', function(req, res)
+{
+    console.log('This is the res ' + res.body);
+    console.log('This is the req' + req.body);
     var twiml = new twilio.TwimlResponse();
     twiml.message('The Robots are coming! Head for the hills!');
     res.writeHead(200, {'Content-Type': 'text/xml'});
@@ -64,7 +67,7 @@ var initTwilio = function(obj) {
 });
 }
 
-http.createServer(function(request, response){
+/*ttp.createServer(function(request, response){
   app.post('/sms', function(req, res)
   {
               var userResponse = res.body();
@@ -79,4 +82,4 @@ http.createServer(function(request, response){
         http.createServer(app).listen(8000, function () {
           console.log("Express server listening on port 8000");
         });
-}).listen(portno)
+}).listen(portno) */
