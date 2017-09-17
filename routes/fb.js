@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request')
 var craigslist = require('./craigslist');
+var shopperIntent = require('../utils/shopperIntent');
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
 
@@ -15,29 +16,26 @@ exports.webhook = function(req, res) {
 		for (let i = 0; i < messaging_events.length; i++) {
 			let event = req.body.entry[0].messaging[i]
 			let sender = event.sender.id
-			console.log('event.message', event.message);
 
-			//If it's text
-			if(event.message && event.message.text) {
-				let text = event.message.text
-
-				if (text === 'Generic'){ 
-					console.log("welcome to chatbot")
+			if (event.message && event.message.text) {
+				var intentRes = shopperIntent.shopperIntent(event.message.text);
+				var intent = intentRes.topScoringIntent.intent
+				
+				if (intent === 'Shop'){
+					var product = intentRes.entities[0].entity;
 					var obj = {
 						category : "sss",
 					    maxAsk : 500,
 					    minAsk : 100,
 					    city : "Seattle",
-					    query : "IPhone"
+					    query : product
 					}
+					sendTextMessage(sender, "Okay! Give me a sec while I look for a " + product);
 					craigslist.getListings(obj, function(res){
 						console.log('res after getListings', res);
 						sendListingCardsMessage(sender, res);
 					});
-					//sendGenericMessage(sender)
-					continue
 				} else {
-
 					sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
 				}
 			} 
@@ -53,7 +51,7 @@ exports.webhook = function(req, res) {
 
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
-	
+
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
