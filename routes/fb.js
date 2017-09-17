@@ -83,6 +83,9 @@ exports.webhook = function(req, res) {
 					payload = event.postback ? JSON.parse(event.postback.payload) : JSON.parse(event.message.quick_reply.payload);
 					if (payload.type === "buy") {
 						console.log("inside buy postback");
+						orders[sender].listingTitle = payload.title;
+						orders[sender].name = payload.name;
+						orders[sender].price = payload.price;
 						sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
 						setTimeout(function() {
 							sendQuickMessage(sender, "You can contact the seller directly or if you'd like I can negotiate the price on your behalf. Would you like me to do that?");
@@ -99,8 +102,13 @@ exports.webhook = function(req, res) {
 						} else {
 							sendTextMessage(sender, "Sure, I'll let you contact them! Hope you enjoy your " + orders[sender].product + "!! ^_^");
 							var twilobj = {
-
+								title: orders[sender].listingTitle,
+								name: orders[sender].name,
+								price: orders[sender].price
 							};
+
+							console.log('twilobj', twilobj);
+
 							twil.conversationWithSeller(twilobj);
 							delete orders[sender];
 							delete orders[parseInt(sender)];
@@ -181,7 +189,7 @@ function sendListingCardsMessage(sender, listings) {
 		method: 'GET'
 	}, function(error, response, body) {
 		let bodyObj = JSON.parse(response.body);
-				console.log('graph res', bodyObj);
+		console.log('graph res', bodyObj);
 
 		listingsObj.forEach((listing) => {
 			let element = {
