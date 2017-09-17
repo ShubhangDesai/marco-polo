@@ -18,7 +18,7 @@ exports.webhook = function(req, res) {
 			for (let i = 0; i < messaging_events.length; i++) {
 				let event = req.body.entry[0].messaging[i]
 				let sender = event.sender.id
-
+				console.log('event', event);
 				if (event.message && event.message.text) {
 					request({
 				    url: 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/16b92656-8832-4d56-92ea-15f72fe69b3b',
@@ -94,7 +94,6 @@ function sendQuickMessage(sender, text) {
 		quick_replies:[
 		    {
 		        content_type:"text",
-		        type:"postback",
 		        title:"Yes",
 		        payload: JSON.stringify({
 		            "type": "negotiate",
@@ -103,7 +102,6 @@ function sendQuickMessage(sender, text) {
 		    },
 		    {
 		        content_type:"text",
-		        type:"postback",
 		        title:"No",
 				payload: JSON.stringify({
 		            "type": "negotiate",
