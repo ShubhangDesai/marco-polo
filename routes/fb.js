@@ -1,6 +1,6 @@
 var express = require('express');
 var request = require('request')
-var craigslist = require('./routes/craigslist');
+var craigslist = require('./craigslist');
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
 
