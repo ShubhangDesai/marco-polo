@@ -92,7 +92,11 @@ function sendListingCardsMessage(sender, listings) {
 		    }, {
 			    "type": "postback",
 			    "title": "Buy",
-			    "payload": "Payload for first element in a generic bubble",
+			    "payload": { 
+		            "type": "buy", 
+		            "pid": listing.pid, 
+		            "replyUrl": listing.replyUrl 
+		          } 
 		    }],
 		};
 
