@@ -14,8 +14,10 @@ exports.webhook = function(req, res) {
 		for (let i = 0; i < messaging_events.length; i++) {
 			let event = req.body.entry[0].messaging[i]
 			let sender = event.sender.id
+			console.log('event.message', event.message);
+
+			//If it's text
 			if(event.message && event.message.text) {
-				console.log('event.message', event.message);
 				let text = event.message.text
 
 				if (text === 'Generic'){ 
@@ -25,6 +27,8 @@ exports.webhook = function(req, res) {
 				}
 
 				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
+			} else if (event.message && event.message.attachments){ //it's location
+				console.log('attachment', attachments[0]);
 			}
 			if (event.postback) {
 				let text = JSON.stringify(event.postback)
