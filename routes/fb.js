@@ -20,9 +20,10 @@ exports.webhook = function(req, res) {
 				let sender = event.sender.id
 				console.log('event', event);
 				if (event.message && event.message.text) {
-					if(orders[sender] != undefined && orders[sender].min != undefined && orders[sender].max != undefined) {
+					if(orders[sender].number) {
 						console.log("PHONE NUMBER!!!!!", event.message.text);
 						delete orders[sender];
+						continue;
 					}
 
 					request({
@@ -86,6 +87,7 @@ exports.webhook = function(req, res) {
 
 						if (payload.answer == 1) {
 							sendTextMessage(sender, "Please give me the phone number of the seller you got from the previous step.");
+							orders[sender].numbers = true;
 
 							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
