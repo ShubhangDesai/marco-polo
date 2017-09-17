@@ -14,7 +14,8 @@ exports.webhook = function(req, res) {
 		let messaging_events = req.body.entry[0].messaging
 		for (let i = 0; i < messaging_events.length; i++) {
 			let event = req.body.entry[0].messaging[i]
-			let sender = event.sender.id
+			let sender = event.sender.id;
+			let recipient = event.recipient.id;
 			console.log('event', event);
 			if (event.message && event.message.text) {
 				request({
@@ -38,13 +39,14 @@ exports.webhook = function(req, res) {
 						    city : "Seattle",
 						    query : product
 						}
-						sendTextMessage(sender, "Okay! Give me a sec while I look for a " + product);
+						sendTextMessage(sender, recipient, "Okay! Give me a sec while I look for a " + product);
+						console.log('sender text', sender);
 						craigslist.getListings(obj, function(res){
-							//console.log('res after getListings', res);
-							sendListingCardsMessage(sender, res);
+							console.log('sender card', sender);
+							sendListingCardsMessage(sender, recipient, res);
 						});
 					} else {
-						sendTextMessage(sender, "Text received, echo: " + event.message.text.substring(0, 200));
+						sendTextMessage(sender, recipient, "Text received, echo: " + event.message.text.substring(0, 200));
 					}
 			  });
 			}
@@ -61,7 +63,7 @@ exports.webhook = function(req, res) {
 	}
 }
 
-function sendTextMessage(sender, text) {
+function sendTextMessage(sender, recipient, text) {
 	let messageData = { text:text }
 
 	request({
@@ -81,7 +83,7 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendListingCardsMessage(sender, listings) {
+function sendListingCardsMessage(sender, recipient, listings) {
 	let elements = [];
 
 	listings.forEach((listing) => {
@@ -123,7 +125,7 @@ function sendListingCardsMessage(sender, listings) {
 	    qs: {access_token:token},
 	    method: 'POST',
 	    json: {
-		    recipient: {id:sender},
+		    recipient: {id:recipient},
 		    message: messageData,
 	    }
     }, function(error, response, body) {
