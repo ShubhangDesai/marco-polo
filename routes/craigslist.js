@@ -40,7 +40,7 @@ exports.getListings = function(request,response) {
 
         resObject.push(listings[i]);
       }
-      console.log(resObject.length);
+      //console.log(resObject.length);
       var i = 0;
       function listingIterator(i) {
         if( i < resObject.length ) {
@@ -49,20 +49,24 @@ exports.getListings = function(request,response) {
               console.log('error: '+err);
             }
             else {
-              resObject[i]['description'] = details.description;
-              resObject[i]['image'] = details.images[0];
-              resObject[i]['replyUrl'] = details.replyUrl;
-              resObject[i]['pid'] = details.pid;
-              
+              console.log(details['replyUrl'] + " hey");
+              resObject[i]['description'] = details['description'];
+              resObject[i]['image'] = details['images'];
+              resObject[i]['replyUrl'] = details['replyUrl'];
+              resObject[i]['pid'] = details['pid'];
+
               listingIterator(i+1);
             }
           })
+        }
+        else{
+          response.send(resObject);
         }
       }
       listingIterator(0);
       // filtered listings (by price)
       //listings.forEach((listing) => console.log(listing));
-      response.send(resObject);
+      
     })
     .catch((err) => {
       console.error(err);
@@ -73,8 +77,10 @@ function getDetails(listing, callback){
   
   client.details(listing)
   .then((details) => {
-    console.log(details);
-    callback(details);
+    //console.log(details);
+    var obj = {};
+    obj = details;
+    callback(obj);
   })
   .catch((err) => {
     console.error(err);
