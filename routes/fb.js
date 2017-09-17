@@ -74,7 +74,7 @@ exports.webhook = function(req, res) {
 					    console.log("inside buy postback");
 				        sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
 				        setTimeout(function(){
-				            sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
+				            sendQuickMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
 				        }, 2000);
 			    	} else if (payload.type == "negotiate") {
 						if (payload.answer == 1) {
@@ -88,6 +88,47 @@ exports.webhook = function(req, res) {
 		}
 		res.sendStatus(200)
 	}
+}
+
+function sendQuickMessage(sender, text) {
+	let messageData = { 
+		text:text,
+		quick_replies:[
+		    {
+		        content_type:"text",
+		        title:"Yes",
+		        payload: JSON.stringify({
+		            "type": "negotiate",
+		            "answer": 1
+		        })
+		    },
+		    {
+		        content_type:"text",
+		        title:"No",
+				payload: JSON.stringify({
+		            "type": "negotiate",
+		            "answer": 0
+		        })		      
+			}
+		  ]
+	} 
+	
+
+	request({
+		url: 'https://graph.facebook.com/v2.6/me/messages',
+		qs: {access_token:token},
+		method: 'POST',
+		json: {
+			recipient: {id:sender},
+			message: messageData,
+		}
+	}, function(error, response, body) {
+		if (error) {
+			console.log('Error sending messages: ', error)
+		} else if (response.body.error) {
+			console.log('Error: ', response.body.error)
+		}
+	})
 }
 
 function sendTextMessage(sender, text) {
