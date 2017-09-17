@@ -47,18 +47,18 @@ exports.convo = function(req,res){
       else if(string.toLowerCase().indexOf("yes") !== -1 || string.toLowerCase().indexOf("yeah") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
         botMessageCount = 0;
-        fb.sendTextMessage(userid, "sdasd");
+        fb.sendTextMessage(userid, "Great news! I was able to get you your '" + title + "'. You can go ahead and contact the number yourself to finalize the details but I've negotiated the prize on your behalf. Hope you enjoy! ^_^");
       }
     }
 
     if(botMessageCount == 2){
       if(string.toLowerCase().indexOf("yeah") !== -1 || string.toLowerCase().indexOf("yes") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
-        fb.sendTextMessage(userid, "sdasd");
+        fb.sendTextMessage(userid, "Great news! I was able to get you your '" + title + "'. You can go ahead and contact the number yourself to finalize the details but I've negotiated the prize on your behalf. Hope you enjoy! ^_^");
       }
       else{
         twiml.message('Nevermind. Thankyou for your time. I don\'t think I\'m interested anymore');
-        fb.sendTextMessage(userid, "sdasd");
+        fb.sendTextMessage(userid, "Unfortunately we were unable to settle on a price. :( Maybe pick another item and I can try again.");
       }
       botMessageCount = 0;
     }
