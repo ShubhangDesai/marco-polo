@@ -20,6 +20,11 @@ exports.webhook = function(req, res) {
 				let sender = event.sender.id
 				console.log('event', event);
 				if (event.message && event.message.text) {
+					if(orders[sender] != undefined && orders[sender].min != undefined && orders[sender].max != undefined) {
+						console.log("PHONE NUMBER!!!!!", event.message.text);
+						delete orders[sender];
+					}
+
 					request({
 				    url: 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/16b92656-8832-4d56-92ea-15f72fe69b3b',
 				    qs: {
@@ -85,6 +90,7 @@ exports.webhook = function(req, res) {
 							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
 							sendTextMessage(sender, "Sure, I'll let you contact them! Hope you enjoy your " + orders[sender].product + "!! ^_^");
+							delete orders[sender];
 						}
 					}
 				}
