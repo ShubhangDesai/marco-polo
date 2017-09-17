@@ -1,5 +1,6 @@
 var express = require('express');
-var request = require('request')
+var request = require('request');
+var shopperIntent = require('shopperIntent');
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
 
@@ -15,10 +16,12 @@ exports.webhook = function(req, res) {
 			let event = req.body.entry[0].messaging[i]
 			let sender = event.sender.id
 			if (event.message && event.message.text) {
-				let text = event.message.text
-				if (text === 'Generic'){ 
-					console.log("welcome to chatbot")
-					sendGenericMessage(sender)
+				var intentRes = shopperIntent.shopperIntent(event.message.text);
+				var intent = intentRes.topScoringIntent.intent
+				if (intent === 'GivePrice'){
+					var product = intentRes.entities[0].entity;
+					sendTextMessage(sender, "Okay! Give me a sec while I look for a " + product);
+					sendGenericMessage(sender);
 					continue
 				}
 				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
@@ -35,7 +38,7 @@ exports.webhook = function(req, res) {
 
 function sendTextMessage(sender, text) {
 	let messageData = { text:text }
-	
+
 	request({
 		url: 'https://graph.facebook.com/v2.6/me/messages',
 		qs: {access_token:token},
