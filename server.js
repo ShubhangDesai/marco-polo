@@ -51,12 +51,7 @@ app.get('/list', function(request, response){
 	});
 });
 
-app.post('/sms', function(req, res)
-{
-    twil.convo(req,res);
-    res.writeHead(200, {'Content-Type': 'text/xml'});
-    res.end(twiml.toString());
-});
+app.post('/sms', twil.convo);
 
 var server = app.listen(app.get('port'), function () {
   console.log('Listening at http://localhost:' + app.get('port'));
