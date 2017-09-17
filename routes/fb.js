@@ -17,10 +17,10 @@ exports.webhook = function(req, res) {
 		if (messaging_events) {
 			for (let i = 0; i < messaging_events.length; i++) {
 				let event = req.body.entry[0].messaging[i]
-				let sender = event.sender.id
+				var sender = event.sender.id
 				console.log('event', event);
 				if (event.message && event.message.text) {
-					console.log('sender', orders[sender]);
+					console.log('sender', orders[sender], sender);
 					if(orders[sender] != undefined) 
 						console.log(orders[sender].number)
 					if (orders[sender] != undefined && orders[sender].number == true) {
@@ -92,7 +92,7 @@ exports.webhook = function(req, res) {
 						if (payload.answer == 1) {
 							sendTextMessage(sender, "Please give me the phone number of the seller you got from the previous step.");
 							orders[sender].number = true;
-							console.log(orders[sender].number, "inside payload")
+							console.log(orders[sender], "inside payload", sender);
 
 							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
