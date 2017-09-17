@@ -16,21 +16,14 @@ var initTwilio = function(obj) {
                 console.log(' error is: ' + err);
               	console.log(' Testing gives: ' + message);
           });
-
-
-          http.createServer(function(request, response){
-            app.post('/sms', function(req, res) {
-                        var twiml = new twilio.TwimlResponse();
-                        twiml.message('The Robots are coming! Head for the hills!');
-                        res.writeHead(200, {'Content-Type': 'text/xml'});
-                        res.end(twiml.toString());
-                      });
-
-                  http.createServer(app).listen(8000, function () {
-                    console.log("Express server listening on port 8000");
-                  });
-          }).listen(portno)
-
-
-
 }
+
+function sendToUser(var message, var numberSeller, var numberBuyer){
+    client.messages.create({
+      body: message,
+      to: numberBuyer,
+      from: numberSeller
+    }, function(message){
+        console.log('Testing gives ' + message);
+    });
+};
