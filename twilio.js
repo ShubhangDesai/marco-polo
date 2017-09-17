@@ -16,12 +16,15 @@ var sendMessage = function(message,to) {
           }, function(err, message) {
               if(err)
                 console.log(' error is: ', err);
-              	console.log(' Testing gives: ' + message);
+              	console.log(' Testing gives: ', message);
           });
 };
 
 
 exports.conversationWithSeller = function(data){
+  name = data.name;
+  title = data.title;
+  initialcost = parseInt(data.price) * 0.8;
   if(init == 0){
     init = 1;
     var message = "Hi, I'm " + name + ". I saw your listing on craigslist titled \"" + title + "\". I was wondering if you would be interested in selling it to me for " + initialcost + ". Please let me know.";
@@ -34,17 +37,17 @@ exports.convo = function(req,res){
     var twiml = new twilio.TwimlResponse();
     botMessageCount++;
     if(botMessageCount == 1){
-      if(string.indexOf("No") !== -1 || string.indexOf("no") !== -1){
+      if(string.toLowerCase().indexOf("no") !== -1 || string.toLowerCase().indexOf("nah") !== -1){
         twiml.message('Oh! Does '+actualCost+ " sound good?");
       }
-      else if(string.indexOf("yes") !== -1 || string.indexOf("Yes") !== -1){
+      else if(string.toLowerCase().indexOf("yes") !== -1 || string.toLowerCase().indexOf("yeah") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
         botMessageCount = 0;
       }
     }
 
     if(botMessageCount == 2){
-      if(string.indexOf("yes") !== -1 || string.indexOf("Yes") !== -1){
+      if(string.toLowerCase().indexOf("yeah") !== -1 || string.toLowerCase().indexOf("yes") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
       }
       else{
