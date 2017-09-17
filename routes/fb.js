@@ -38,7 +38,7 @@ exports.webhook = function(req, res) {
 				} else {
 
 					sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-				}
+				a}
 			} 
 			if (event.postback) {
 				let text = JSON.stringify(event.postback)
@@ -73,7 +73,7 @@ function sendTextMessage(sender, text) {
 function sendListingCardsMessage(sender, listings) {
 	let elements = [];
 
-	for(let listing: listings){
+	listingsforEach((listing) => {
 		let element = {
 			"title": listing.title,
 		    "subtitle": listing.description,
@@ -92,7 +92,7 @@ function sendListingCardsMessage(sender, listings) {
 			element.image_url = image[0];
 
 		elements.push(element);
-	}
+	});
 
     let messageData = {
 	    "attachment": {
