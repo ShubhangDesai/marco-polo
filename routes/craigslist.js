@@ -2,10 +2,13 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var craigslist = require('node-craigslist');
 
+client = new craigslist.Client({
+});
+
+var resObject = [];
+
 exports.getListings = function(request,response) { 
-  client = new craigslist.Client({
-      city : request.body.city
-    });
+    
     var options = {
       hasPic : true,
       bundleDuplicates : true,
@@ -25,20 +28,61 @@ exports.getListings = function(request,response) {
     if(request.body.hasOwnProperty('offset')){
       options['offset'] = request.body.offset;
     }
+    if(request.body.hasOwnProperty('city')){
+      options['city'] = request.body.city;
+    }
 
     //console.log(options);
-    var resObject = [];
-  client
+    client
     .search(options, request.body.query)
     .then((listings) => {
       for(var i=0; i<listings.length && i<5; i++){
+
         resObject.push(listings[i]);
       }
+      //console.log(resObject.length);
+      var i = 0;
+      function listingIterator(i) {
+        if( i < resObject.length ) {
+          getDetails( resObject[i], function(details, err) {
+            if(err) {
+              console.log('error: '+err);
+            }
+            else {
+              console.log(details['replyUrl'] + " hey");
+              resObject[i]['description'] = details['description'];
+              resObject[i]['image'] = details['images'];
+              resObject[i]['replyUrl'] = details['replyUrl'];
+              resObject[i]['pid'] = details['pid'];
+
+              listingIterator(i+1);
+            }
+          })
+        }
+        else{
+          response.send(resObject);
+        }
+      }
+      listingIterator(0);
       // filtered listings (by price)
-      listings.forEach((listing) => console.log(listing));
-      response.send(resObject);
+      //listings.forEach((listing) => console.log(listing));
+      
     })
     .catch((err) => {
       console.error(err);
     });
+}
+
+function getDetails(listing, callback){
+  
+  client.details(listing)
+  .then((details) => {
+    //console.log(details);
+    var obj = {};
+    obj = details;
+    callback(obj);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
 }
