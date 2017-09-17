@@ -24,23 +24,27 @@ var conversationWithSeller = function(data){
     init = 1;
     var message = "Hi, I'm " + name + ". I saw your listing on craigslist titled \"" + title + "\". I was wondering if you would be interested in selling it to me for " + initialcost + ". Please let me know.";
     sendMessage(message, phoneNumber);
-    botMessageCount++;
   } 
 }
 
 exports.convo = function(req,res){
     var string = req.body.Body;
     var twiml = new twilio.TwimlResponse();
-    if(botMessageCount == 1 && (string.indexOf("No") !== -1 || string.indexOf("no") !== -1)){
-      twiml.message('Oh! Does '+actualCost+ " sound good?");
+    if(botMessageCount == 0){
+      if(string.indexOf("No") !== -1 || string.indexOf("no") !== -1){
+        twiml.message('Oh! Does '+actualCost+ " sound good?");
+      }
+      else if(string.indexOf("yes") !== -1 || string.indexOf("Yes") !== -1){
+        twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
+      }
     }
 
-    if(botMessageCount == 2){
+    if(botMessageCount == 1){
       if(string.indexOf("yes") !== -1 || string.indexOf("Yes") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
       }
       else{
-        twiml.message('Nevermind. Thankyou for your time.');
+        twiml.message('Nevermind. Thankyou for your time. I don\'t think I\'m interested anymore');
       }
     }
     
