@@ -20,7 +20,8 @@ exports.webhook = function(req, res) {
 				let sender = event.sender.id
 				console.log('event', event);
 				if (event.message && event.message.text) {
-					console.log(orders[sender].number)
+					if(orders[sender] != undefined) 
+						console.log(orders[sender].number)
 					if (orders[sender] != undefined && orders[sender].number == true) {
 						console.log("PHONE NUMBER!!!!!", event.message.text);
 						delete orders[sender];
