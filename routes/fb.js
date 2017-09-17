@@ -90,7 +90,7 @@ function sendListingCardsMessage(sender, listings) {
 		};
 
 		if(listing.image)
-			element.image_url = image[0];
+			element.image_url = listing.image[0];
 
 		elements.push(element);
 	});
