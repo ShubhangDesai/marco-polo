@@ -62,21 +62,19 @@ exports.webhook = function(req, res) {
 								orders[sender].min = price;
 								sendTextMessage(sender, "And a maximum?");
 							}
-						} else {
-							sendTextMessage(sender, "Text received, echo: " + event.message.text.substring(0, 200));
 						}
 				  });
 				} 
 
 				if (event.postback) {
 					payload = JSON.parse(event.postback.payload);
-					if (payload.type == "buy") {
+					if (payload.type === "buy") {
 					    console.log("inside buy postback");
 				        sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
 				        setTimeout(function(){
 				            sendQuickMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
 				        }, 2000);
-			    	} else if (payload.type == "negotiate") {
+			    	} else if (payload.type === "negotiate") {
 						if (payload.answer == 1) {
 							sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
@@ -96,6 +94,7 @@ function sendQuickMessage(sender, text) {
 		quick_replies:[
 		    {
 		        content_type:"text",
+		        type:"postback",
 		        title:"Yes",
 		        payload: JSON.stringify({
 		            "type": "negotiate",
@@ -104,6 +103,7 @@ function sendQuickMessage(sender, text) {
 		    },
 		    {
 		        content_type:"text",
+		        type:"postback",
 		        title:"No",
 				payload: JSON.stringify({
 		            "type": "negotiate",
