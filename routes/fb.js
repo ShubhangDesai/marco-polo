@@ -66,8 +66,10 @@ exports.webhook = function(req, res) {
 				  });
 				} 
 
-				if (event.postback || event.quick_reply) {
-					payload = event.postback ? JSON.parse(event.postback.payload) : JSON.parse(event.quick_reply.payload);
+				if (event.postback || (event.message && event.message.quick_reply)) {
+					console.log("inside 0");
+
+					payload = event.postback ? JSON.parse(event.postback.payload) : JSON.parse(event.message.quick_reply.payload);
 					if (payload.type === "buy") {
 					    console.log("inside buy postback");
 				        sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
@@ -75,6 +77,8 @@ exports.webhook = function(req, res) {
 				            sendQuickMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
 				        }, 2000);
 			    	} else if (payload.type === "negotiate") {
+			    		console.log("inside negotiate");
+
 						if (payload.answer == 1) {
 							sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
