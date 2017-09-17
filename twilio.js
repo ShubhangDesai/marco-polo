@@ -30,26 +30,28 @@ var conversationWithSeller = function(data){
 exports.convo = function(req,res){
     var string = req.body.Body;
     var twiml = new twilio.TwimlResponse();
-    if(botMessageCount == 0){
+    botMessageCount++;
+    if(botMessageCount == 1){
       if(string.indexOf("No") !== -1 || string.indexOf("no") !== -1){
         twiml.message('Oh! Does '+actualCost+ " sound good?");
       }
       else if(string.indexOf("yes") !== -1 || string.indexOf("Yes") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
+        botMessageCount = 0;
       }
     }
 
-    if(botMessageCount == 1){
+    if(botMessageCount == 2){
       if(string.indexOf("yes") !== -1 || string.indexOf("Yes") !== -1){
         twiml.message('Nice. I can pickup the item from your place whenever you think is a good time. Send me your address.');
       }
       else{
         twiml.message('Nevermind. Thankyou for your time. I don\'t think I\'m interested anymore');
       }
+      botMessageCount = 0;
     }
     
     console.log(req.body.Body);
-    botMessageCount++;
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
 };
