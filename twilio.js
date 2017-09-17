@@ -1,4 +1,3 @@
-
 var accountSid = 'ACf70f438d634576ed3c82882596df73ff';
 var authToken = '1084d124870aa80d68f4e31f2205fd52';
 var obj = [];
@@ -18,7 +17,7 @@ var initTwilio = function(obj) {
           });
 }
 
-function sendToUser(var message, var numberSeller, var numberBuyer){
+function sendToUser(message,numberSeller,numberBuyer){
     client.messages.create({
       body: message,
       to: numberBuyer,

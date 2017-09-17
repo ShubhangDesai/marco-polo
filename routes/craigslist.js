@@ -6,6 +6,7 @@ client = new craigslist.Client({
 });
 
 var resObject = [];
+var avgCost = 0;
 
 exports.getListings = function(request,callback) { 
     
