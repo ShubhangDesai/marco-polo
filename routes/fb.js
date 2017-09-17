@@ -21,7 +21,7 @@ exports.webhook = function(req, res) {
 				console.log('event', event);
 				if (event.message && event.message.text) {
 					console.log('sender', orders[sender], sender);
-
+					console.log('text', event.message.text, parseInt(event.message.text) > 999999999);
 					if(parseInt(event.message.text) && parseInt(event.message.text) > 999999999) {
 						console.log("PHONE NUMBER!!!!!", event.message.text);
 						delete orders[sender];
