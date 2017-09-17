@@ -29,7 +29,8 @@ exports.webhook = function(req, res) {
 						var twilobj = {
 							title: orders[sender].listingTitle,
 							name: orders[sender].name,
-							price: orders[sender].price
+							price: orders[sender].price,
+							userid: orders[sender].userid
 						};
 
 						console.log('twilobj', twilobj);
@@ -181,6 +182,7 @@ function sendTextMessage(sender, text) {
 		}
 	})
 }
+exports.sendTextMessage = sendTextMessage;
 
 function sendListingCardsMessage(sender, listings) {
 	let elements = [];
@@ -209,7 +211,8 @@ function sendListingCardsMessage(sender, listings) {
 						"replyUrl": listing.replyUrl,
 						"title": listing.title,
 						"price": listing.price,
-						"name": bodyObj.first_name
+						"name": bodyObj.first_name,
+						"userid": sender
 					})
 				}],
 			};

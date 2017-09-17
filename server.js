@@ -55,5 +55,5 @@ app.post('/sms', twil.convo);
 
 var server = app.listen(app.get('port'), function () {
   console.log('Listening at http://localhost:' + app.get('port'));
-  twil.sendMessage("hi","+12027510701");
+  //twil.sendMessage("hi","+12027510701");
 });
