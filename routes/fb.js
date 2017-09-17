@@ -201,7 +201,7 @@ function sendListingCardsMessage(sender, listings) {
 		}
 		listingsObj.forEach((listing) => {
 			let element = {
-				"title": listing.title,
+				"title": listing.title+" ("+listing.price+")",
 				"subtitle": listing.description,
 				"buttons": [{
 					"type": "web_url",
