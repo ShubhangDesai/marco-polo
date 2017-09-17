@@ -15,7 +15,7 @@ exports.webhook = function(req, res) {
 		for (let i = 0; i < messaging_events.length; i++) {
 			let event = req.body.entry[0].messaging[i]
 			let sender = event.sender.id
-
+			console.log('event', event);
 			if (event.message && event.message.text) {
 				request({
 			    url: 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/16b92656-8832-4d56-92ea-15f72fe69b3b',
@@ -27,7 +27,7 @@ exports.webhook = function(req, res) {
 			    method: 'GET'
 			  }, function(error, response, body) {
 			    body = JSON.parse(body)
-			    console.log('ms body', body);
+			    //console.log('ms body', body);
 					var intent = body.topScoringIntent.intent;
 					if (intent === 'Shop'){
 						var product = body.entities[0].entity;
@@ -40,7 +40,7 @@ exports.webhook = function(req, res) {
 						}
 						sendTextMessage(sender, "Okay! Give me a sec while I look for a " + product);
 						craigslist.getListings(obj, function(res){
-							console.log('res after getListings', res);
+							//console.log('res after getListings', res);
 							sendListingCardsMessage(sender, res);
 						});
 					} else {
