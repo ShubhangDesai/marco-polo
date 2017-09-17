@@ -4,6 +4,8 @@ var craigslist = require('./craigslist');
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
 
+var orders = {};
+
 exports.webhook = function(req, res) {
 	if (req.method == 'GET'){
 		if (req.query['hub.verify_token'] === 'my_voice_is_my_password_verify_me') {
@@ -30,38 +32,49 @@ exports.webhook = function(req, res) {
 				    body = JSON.parse(body)
 				    console.log('ms body', body);
 						var intent = body.topScoringIntent.intent;
-						if (intent === 'Shop'){
+						if (intent === 'Shop') {
 							var product = body.entities[0].entity;
-							var obj = {
-								category : "sss",
-							    maxAsk : 500,
-							    minAsk : 100,
-							    city : "Seattle",
-							    query : product
+							orders[sender] = {product: product};
+							sendTextMessage(sender, "Okay! I'll try to find you a " + product + ". \
+																			What is the minimum price you're willing to pay for it?");
+
+
+						} else if (intent==='GivePrice') {
+							var price = body.entities[0].entity;
+							if (orders[sender].min != undefined) {
+								orders[sender].max = price;
+								var product = orders[sender].product;
+								var min = orders[sender].min;
+
+								var obj = {
+									category : "sss",
+								    maxAsk : 500,
+								    minAsk : 100,
+								    city : "Seattle",
+								    query : product
+								}
+								sendTextMessage(sender, "Okay! Give me a sec while I look for a " + product);
+								craigslist.getListings(obj, function(res){
+									console.log('res after getListings', res);
+									sendListingCardsMessage(sender, res);
+								});
+							} else {
+								orders[sender].min = price;
+								sendTextMessage(sender, "And a maximum?");
 							}
-							sendTextMessage(sender, "Okay! Give me a sec while I look for a " + product);
-							craigslist.getListings(obj, function(res){
-								console.log('res after getListings', res);
-								sendListingCardsMessage(sender, res);
-							});
 						} else {
 							sendTextMessage(sender, "Text received, echo: " + event.message.text.substring(0, 200));
 						}
 				  });
-				}
-				if (event.postback) {
+				} else if (event.postback) {
 					payload = JSON.parse(event.postback.payload);
-					console.log('event', event);
-					if(payload.type == "buy"){ 
-						console.log("inside buy postback");
-			          sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number."); 
-			          setTimeout(function(){
-			          	sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
-			          }, 2000); 
-			        } 
-					// let text = JSON.stringify(event.postback)
-					// sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-					// continue
+					if (payload.type == "buy") {
+					    console.log("inside buy postback");
+			        sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
+			        setTimeout(function(){
+			            sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
+			        }, 2000);
+			    }
 				}
 			}
 		}
@@ -103,10 +116,10 @@ function sendListingCardsMessage(sender, listings) {
 		    }, {
 			    "type": "postback",
 			    "title": "Buy",
-			    "payload": JSON.stringify({ 
-		            "type": "buy", 
-		            "pid": listing.pid, 
-		            "replyUrl": listing.replyUrl 
+			    "payload": JSON.stringify({
+		            "type": "buy",
+		            "pid": listing.pid,
+		            "replyUrl": listing.replyUrl
 		        })
 		    }],
 		};

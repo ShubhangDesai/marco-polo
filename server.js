@@ -15,6 +15,8 @@ var obj = [];
 var twilio = require('twilio');
 var client = new twilio.RestClient(accountSid, authToken);
 
+var orders = {};
+
 app.use(express.static(__dirname));
 app.set('port', (process.env.PORT || portno));
 
