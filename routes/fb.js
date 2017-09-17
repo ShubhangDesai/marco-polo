@@ -31,6 +31,7 @@ exports.webhook = function(req, res) {
 					    query : "IPhone"
 					}
 					craigslist.getListings(obj, function(res){
+						console.log('res after getListings', res);
 						sendListingCardsMessage(sender, res);
 					});
 					//sendGenericMessage(sender)
