@@ -27,8 +27,8 @@ exports.webhook = function(req, res) {
 				}
 
 				sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200))
-			} else if (event.message && event.message.attachments){ //it's location
-				console.log('attachment', attachments[0]);
+			} else if (event.message && event.message.attachments[0] && event.message.attachments[0].type == "location"){ //it's location
+				console.log('attachment', event.message.attachments[0].payload);
 			}
 			if (event.postback) {
 				let text = JSON.stringify(event.postback)
