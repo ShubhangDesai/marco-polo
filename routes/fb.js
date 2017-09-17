@@ -48,8 +48,8 @@ exports.webhook = function(req, res) {
 
 								var obj = {
 									category : "sss",
-								    maxAsk : 500,
-								    minAsk : 100,
+								    maxAsk : max,
+								    minAsk : min,
 								    city : "Seattle",
 								    query : product
 								}
