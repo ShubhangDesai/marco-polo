@@ -26,8 +26,17 @@ exports.webhook = function(req, res) {
 					console.log('text', event.message.text, parseInt(event.message.text) > 999999999);
 					if(parseInt(event.message.text) && parseInt(event.message.text) > 999999999) {
 						console.log("PHONE NUMBER!!!!!", event.message.text);
+						var twilobj = {
+							title: orders[sender].listingTitle,
+							name: orders[sender].name,
+							price: orders[sender].price
+						};
+
+						console.log('twilobj', twilobj);
+						sendTextMessage(sender, "I'll reach out to them and get back to you with an offer ASAP. :)");
+						twil.conversationWithSeller(twilobj);
 						delete orders[sender];
-						continue;
+
 					} else {
 
 						request({
@@ -101,15 +110,7 @@ exports.webhook = function(req, res) {
 							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
 							sendTextMessage(sender, "Sure, I'll let you contact them! Hope you enjoy your " + orders[sender].product + "!! ^_^");
-							var twilobj = {
-								title: orders[sender].listingTitle,
-								name: orders[sender].name,
-								price: orders[sender].price
-							};
 
-							console.log('twilobj', twilobj);
-
-							twil.conversationWithSeller(twilobj);
 							delete orders[sender];
 							delete orders[parseInt(sender)];
 						}
