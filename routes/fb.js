@@ -74,7 +74,7 @@ function sendTextMessage(sender, text) {
 function sendListingCardsMessage(sender, listings) {
 	let elements = [];
 
-	listingsforEach((listing) => {
+	listings.forEach((listing) => {
 		let element = {
 			"title": listing.title,
 		    "subtitle": listing.description,
