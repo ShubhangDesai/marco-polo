@@ -52,7 +52,7 @@ exports.webhook = function(req, res) {
 				if (event.postback) {
 					//event.postback = JSON.parse(event.postback);
 					console.log('event', event);
-					if(event.postback.type == "buy"){ 
+					if(event.postback.payload.type == "buy"){ 
 			          sendTextMessage(sender, "Okay! Here's the reply URL - " + event.postback.replyUrl + ". You need to click it to get the seller's number."); 
 			          sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?"); 
 			        } 
