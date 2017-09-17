@@ -25,6 +25,12 @@ exports.webhook = function(req, res) {
 				if (event.message && event.message.text) {
 					console.log('sender', orders[sender], sender);
 					console.log('text', event.message.text, parseInt(event.message.text) > 999999999);
+
+					if(event.message.text === "Thanks!"){
+						orders = {};
+						break;
+					}
+
 					if(parseInt(event.message.text) && parseInt(event.message.text) > 999999999) {
 						console.log("PHONE NUMBER!!!!!", event.message.text);
 						var twilobj = {
@@ -61,6 +67,7 @@ exports.webhook = function(req, res) {
 
 
 							} else if (intent === 'GivePrice' && body.entities[0] != undefined) {
+								orders = {};
 								var price = body.entities[0].entity;
 								if (orders[sender].min != undefined) {
 									orders[sender].max = price;
