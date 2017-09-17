@@ -41,8 +41,7 @@ app.post('/getListings', craigslist.getListings);
 
 app.post('/sms', function(req, res)
 {
-    console.log('This is the res ' + res.body);
-    console.log('This is the req' + req.body);
+    console.log('This is the req', req.body);
     var twiml = new twilio.TwimlResponse();
     twiml.message('The Robots are coming! Head for the hills!');
     res.writeHead(200, {'Content-Type': 'text/xml'});
