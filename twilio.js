@@ -23,9 +23,11 @@ var sendMessage = function(message,to) {
 
 
 exports.conversationWithSeller = function(data){
+  console.log('convowseller data', data);
   name = data.name;
   title = data.title;
-  initialcost = parseInt(data.price) * 0.8;
+  initialcost = parseInt(data.price.substring(1)) * 0.8;
+  actualCost = parseInt(data.price.substring(1));
   userid = data.userid;
   if(init == 0){
     init = 1;
