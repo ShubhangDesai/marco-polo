@@ -1,6 +1,7 @@
 var express = require('express');
 var request = require('request')
 var craigslist = require('./craigslist');
+var myID = '117445018970988';
 
 const token = process.env.FB_PAGE_ACCESS_TOKEN;
 
@@ -14,9 +15,10 @@ exports.webhook = function(req, res) {
 		let messaging_events = req.body.entry[0].messaging
 		for (let i = 0; i < messaging_events.length; i++) {
 			let event = req.body.entry[0].messaging[i]
-			let sender = event.sender.id
-
-			if (event.message && event.message.text) {
+			let sender = event.sender.id;
+			let recipient = event.recipient.id;
+			console.log('event', event);
+			if (event.message && event.message.text && sender != myID) {
 				request({
 			    url: 'https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/16b92656-8832-4d56-92ea-15f72fe69b3b',
 			    qs: {
@@ -27,6 +29,7 @@ exports.webhook = function(req, res) {
 			    method: 'GET'
 			  }, function(error, response, body) {
 			    body = JSON.parse(body)
+			    //console.log('ms body', body);
 					var intent = body.topScoringIntent.intent;
 					if (intent === 'Shop'){
 						var product = body.entities[0].entity;
@@ -37,27 +40,31 @@ exports.webhook = function(req, res) {
 						    city : "Seattle",
 						    query : product
 						}
-						sendTextMessage(sender, "Okay! Give me a sec while I look for a " + product);
+						sendTextMessage(sender, recipient, "Okay! Give me a sec while I look for a " + product);
+						console.log('sender text', sender);
 						craigslist.getListings(obj, function(res){
-							console.log('res after getListings', res);
-							sendListingCardsMessage(sender, res);
+							console.log('sender card', sender);
+							sendListingCardsMessage(sender, recipient, res);
 						});
 					} else {
-						sendTextMessage(sender, "Text received, echo: " + text.substring(0, 200));
+						sendTextMessage(sender, recipient, "Text received, echo: " + event.message.text.substring(0, 200));
 					}
 			  });
 			}
 			if (event.postback) {
-				let text = JSON.stringify(event.postback)
-				sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
-				continue
+				if(event.postback.type == "buy"){
+					sendTextMessage(sender, "Okay! Here's the reply URL - " + event.postback.replyUrl + ". You need to click it to get the seller's number.");
+					sendTextMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
+				}
+				//let text = JSON.stringify(event.postback)
+				//sendTextMessage(sender, "Postback received: "+text.substring(0, 200), token)
 			}
 		}
 		res.sendStatus(200)
 	}
 }
 
-function sendTextMessage(sender, text) {
+function sendTextMessage(sender, recipient, text) {
 	let messageData = { text:text }
 
 	request({
@@ -77,7 +84,7 @@ function sendTextMessage(sender, text) {
 	})
 }
 
-function sendListingCardsMessage(sender, listings) {
+function sendListingCardsMessage(sender, recipient, listings) {
 	let elements = [];
 
 	listings.forEach((listing) => {
@@ -91,7 +98,11 @@ function sendListingCardsMessage(sender, listings) {
 		    }, {
 			    "type": "postback",
 			    "title": "Buy",
-			    "payload": "Payload for first element in a generic bubble",
+			    "payload": {
+			    	"type": "buy",
+			    	"pid": listing.pid,
+			    	"replyUrl": listing.replyUrl
+			    },
 		    }],
 		};
 
@@ -115,7 +126,7 @@ function sendListingCardsMessage(sender, listings) {
 	    qs: {access_token:token},
 	    method: 'POST',
 	    json: {
-		    recipient: {id:sender},
+		    recipient: {id:recipient},
 		    message: messageData,
 	    }
     }, function(error, response, body) {
