@@ -13,7 +13,8 @@ var sendMessage = function(message,to) {
               to: to,
               from: '+12027510701'
           }, function(err, message) {
-                console.log(' error is: ' + err);
+              if(err)
+                console.log(' error is: ', err);
               	console.log(' Testing gives: ' + message);
           });
 };
