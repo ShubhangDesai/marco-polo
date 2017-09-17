@@ -6,8 +6,9 @@ var bodyParser = require('body-parser');
 var request = require('request');
 var fb = require('./routes/fb');
 var craigslist = require('./routes/craigslist');
+var twil = require('./twilio');
 
-var portno = 8000;
+var portno = 8080;
 var app = express();
 var accountSid = 'ACf70f438d634576ed3c82882596df73ff';
 var authToken = '1084d124870aa80d68f4e31f2205fd52';
@@ -52,44 +53,14 @@ app.get('/list', function(request, response){
 
 app.post('/sms', function(req, res)
 {
-    console.log('This is the req', req.body.Body);
     var twiml = new twilio.TwimlResponse();
     twiml.message('Response: '+req.body.Body);
+    console.log(req.body.Body);
     res.writeHead(200, {'Content-Type': 'text/xml'});
     res.end(twiml.toString());
 });
 
 var server = app.listen(app.get('port'), function () {
   console.log('Listening at http://localhost:' + app.get('port'));
-  initTwilio(obj);
+  twil.sendMessage("hi","+12027510701");
 });
-
-
-var sellerText = 'I am selling a sofa';
-var initTwilio = function(obj) {
-  	client.messages.create({
-    	body: sellerText,
-      	to: '+17657750687',
-      	from: '+12727703870'
-  	}, function(err, message) {
-        console.log(' error is: ' + err);
-      	console.log(' Testing gives: ' + message);
-});
-}
-
-/*ttp.createServer(function(request, response){
-  app.post('/sms', function(req, res)
-  {
-              var userResponse = res.body();
-              console.log(userResponse);
-              var twiml = new twilio.TwimlResponse();
-              //var userResponse = twiml.body();
-              twiml.message('The Robots are coming! Head for the hills!');
-              res.writeHead(200, {'Content-Type': 'text/xml'});
-              res.end(twiml.toString());
-            });
-
-        http.createServer(app).listen(8000, function () {
-          console.log("Express server listening on port 8000");
-        });
-}).listen(portno) */
