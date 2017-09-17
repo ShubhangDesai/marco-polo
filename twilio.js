@@ -36,6 +36,8 @@ exports.convo = function(req,res){
     var twiml = new twilio.TwimlResponse();
     twiml.message('Response: '+req.body.Body);
     console.log(req.body.Body);
+    res.writeHead(200, {'Content-Type': 'text/xml'});
+    res.end(twiml.toString());
 };
 
 exports.sendMessage = sendMessage;
