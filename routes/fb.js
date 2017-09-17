@@ -74,13 +74,15 @@ exports.webhook = function(req, res) {
 					    console.log("inside buy postback");
 				        sendTextMessage(sender, "Okay! Here's the reply URL - " + payload.replyUrl + ". You need to click it to get the seller's number.");
 				        setTimeout(function(){
-				            sendQuickMessage(sender, "If you'd like I can negotiate the price on your behalf. Would you like me to do that?");
+				            sendQuickMessage(sender, "You can contact the seller directly or if you'd like I can negotiate the price on your behalf. Would you like me to do that?");
 				        }, 2000);
 			    	} else if (payload.type === "negotiate") {
 			    		console.log("inside negotiate");
 
 						if (payload.answer == 1) {
-							sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
+							sendTextMessage(sender, "Please give me the phone number of the seller you got from the previous step.");
+
+							// sendTextMessage(sender, "Of course! I'll reach out to them and get back to you with an offer ASAP. :)");
 						} else {
 							sendTextMessage(sender, "Sure, I'll let you contact them! Hope you enjoy your " + orders[sender].product + "!! ^_^");
 						}
