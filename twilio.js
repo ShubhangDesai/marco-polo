@@ -11,7 +11,7 @@ var sendMessage = function(message,to) {
   client.messages.create({
               body: message,
               to: to,
-              from: '+17657750687'
+              from: '+12027510701'
           }, function(err, message) {
                 console.log(' error is: ' + err);
               	console.log(' Testing gives: ' + message);
@@ -31,5 +31,11 @@ exports.conversationWithSeller = function(data){
     }
   }
 }
+
+exports.convo = function(req,res){
+    var twiml = new twilio.TwimlResponse();
+    twiml.message('Response: '+req.body.Body);
+    console.log(req.body.Body);
+};
 
 exports.sendMessage = sendMessage;
